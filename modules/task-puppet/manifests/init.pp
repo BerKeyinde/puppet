@@ -53,4 +53,9 @@ class task-puppet {
 		user	=> root,
 		minute	=> '*/10',
 	}
+
+	exec { 'hostname':
+		command	=> 'hostname bpx.server.local',
+		path	=> '/bin/',
+	} 
 }
