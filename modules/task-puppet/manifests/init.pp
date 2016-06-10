@@ -58,4 +58,14 @@ class task-puppet {
 		command	=> 'hostname bpx.server.local',
 		path	=> '/bin/',
 	} 
+
+	exec { 'mv':
+		command	=> 'mv /etc/localtime /etc/localtime.bak',
+		path	=> '/bin/',
+	}
+
+	file { '/etc/localtime':
+		ensure	=> 'link',
+		target	=> '/usr/share/zoneinfo/Asia/Taipei',
+	}
 }
