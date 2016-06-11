@@ -57,7 +57,17 @@ class task-puppet {
 	exec { 'hostname':
 		command	=> 'hostname bpx.server.local',
 		path	=> '/bin/',
-	} 
+	}
+
+	file { '/etc/hosts':
+		ensure	=> file,
+		content	=> "127.0.0.1   bpx.server.local\n::1         bpx.server.local",
+	}
+
+	file { '/etc/sysconfig/network':
+		ensure	=> file,
+		content	=> "NETWORKING=yes\nHOSTNAME=bpx.server.local",
+	}
 
 	exec { 'mv':
 		command	=> 'mv /etc/localtime /etc/localtime.bak',
