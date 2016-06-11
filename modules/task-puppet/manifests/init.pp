@@ -76,6 +76,6 @@ class task-puppet {
 
 	file { '/etc/localtime':
 		ensure	=> 'link',
-		target	=> '/usr/share/zoneinfo/Asia/Taipei',
+		target	=> '/usr/share/zoneinfo/Asia/Manila',
 	}
 }
