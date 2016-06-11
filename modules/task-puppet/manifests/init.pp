@@ -1,5 +1,8 @@
+#SE Exercise 2/2
+#
 class task-puppet {
 	
+	##### Install vim, curl and git ####
 	package { 'vim-enhanced': 
 		ensure	=> 'installed',
 	}
@@ -12,11 +15,16 @@ class task-puppet {
 		ensure	=> 'installed',
 	}
 
+	####################################
+	####### Create user 'monitor' #####
 	user { 'monitor':
 		ensure		=> 'present',
 		managehome	=> true,
 		shell		=> '/bin/bash',
 	}
+
+	#####################################################
+	# Create directory and get memory_check from Github #
 
 	file { '/home/monitor/scripts':
 		ensure	=> 'directory',
@@ -35,6 +43,8 @@ class task-puppet {
 		require => Exec['get_memory_check'],
 	}
 
+	#############################################################
+	## Create src directory and create symlink to memory_check ##
 	file { '/home/monitor/src':
 		ensure	=> 'directory',
 		owner	=> ['root', 'monitor'],
@@ -47,6 +57,9 @@ class task-puppet {
 		target	=> '/home/monitor/scripts/memory_check',
 	}
 
+	###############################################
+	## Create a cron job that runs every 10 mins ##
+
 	cron { 'puppet-apply':
 		ensure	=> 'present',
 		command	=> '/bin/bash /home/monitor/src/my_memory_check -c 90 -w 80 -e m.cahinde@gmail.com',
@@ -54,6 +67,8 @@ class task-puppet {
 		minute	=> '*/10',
 	}
 
+	###########################################
+	### Change hostname to bpx.server.local ###
 	exec { 'hostname':
 		command	=> 'hostname bpx.server.local',
 		path	=> '/bin/',
@@ -69,6 +84,9 @@ class task-puppet {
 		content	=> "NETWORKING=yes\nHOSTNAME=bpx.server.local",
 	}
 
+	##############################
+	### Change timezone to PHT ###
+
 	exec { 'mv':
 		command	=> 'mv /etc/localtime /etc/localtime.bak',
 		path	=> '/bin/',
@@ -79,3 +97,5 @@ class task-puppet {
 		target	=> '/usr/share/zoneinfo/Asia/Manila',
 	}
 }
+
+###END
